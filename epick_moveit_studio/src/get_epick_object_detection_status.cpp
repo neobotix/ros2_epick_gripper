@@ -33,6 +33,19 @@
 
 namespace
 {
+inline constexpr auto kDescription = R"(
+                <p>Wait for an Epick ObjectDetectionStatus message to be published on a specified ROS topic and copy it to an output data port.</p>
+                <p>Given the name of a topic where <code>epick_msgs::msg::ObjectDetectionStatus</code> messages are being published, this Behavior subscribes to that topic and waits until a new message is published to the topic.</p>
+                <p>When the Behavior's subscriber receives a new point cloud message, this Behavior copies it to an output data port and then finishes with a SUCCESS status.</p>
+                <p>If any of the following failure states occur, this Behavior will exit with a FAILURE status code:</p>
+                <ul>
+                    <li>No publisher is found on the topic.</li>
+                    <li>Creating a subscription on the topic does not succeed.</li>
+                    <li>A publisher was found on the topic, but no message is published on the topic before a 1-second timeout duration has passed.</li>
+                </ul>
+                <p>This Behavior is derived from the GetMessageFromTopic class defined in the <code>moveit_studio_behavior_interface</code> package.</p>
+            )";
+
 /** @brief Maximum duration to wait for a message to be published before failing. */
 constexpr auto kWaitDuration = std::chrono::seconds{ 1 };
 }  // namespace
@@ -46,6 +59,24 @@ GetEpickObjectDetectionStatus::GetEpickObjectDetectionStatus(
                                                                                                       shared_resources)
 {
 }
+
+BT::PortsList GetEpickObjectDetectionStatus::providedPorts()
+{
+  return BT::PortsList({
+      BT::InputPort<std::string>(kPortIDTopicName, "{some_topic}",
+                                 "The name of the topic which this Behavior will subscribe to and monitor for "
+                                 "epick_msgs::msg::ObjectDetectionStatus messages."),
+      BT::OutputPort<epick_msgs::msg::ObjectDetectionStatus>(kPortIDMessageOut, "{wrench}",
+                                                    "Will contain the output epick_msgs::msg::ObjectDetectionStatus message "
+                                                    "after this Behavior has finished successfully."),
+  });
+}
+
+BT::KeyValueVector GetEpickObjectDetectionStatus::metadata()
+{
+  return { { "subcategory", "Epick" }, { "description", kDescription } };
+}
+
 
 tl::expected<std::chrono::duration<double>, std::string> GetEpickObjectDetectionStatus::getWaitForMessageTimeout()
 {

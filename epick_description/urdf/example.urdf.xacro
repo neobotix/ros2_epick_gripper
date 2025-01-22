@@ -2,8 +2,9 @@
 <robot name="example_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:include filename="$(find epick_description)/urdf/epick_single_suction_cup.xacro"/>
+  <xacro:arg name="use_fake_hardware" default="true" />
 
   <link name="world"/>
-  <xacro:epick_single_suction_cup parent="world" use_fake_hardware="false"/>
+  <xacro:epick_single_suction_cup parent="world" use_fake_hardware="$(arg use_fake_hardware)"/>
 
 </robot>

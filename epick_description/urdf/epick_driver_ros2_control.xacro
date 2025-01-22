@@ -30,7 +30,6 @@
         <!-- The address of the gripper. -->
         <param name="slave_address">${slave_address}</param>
 
-        <!-- The gripper operation mode: AutomaticMode or AdvancedMode. -->
         <param name="mode">${mode}</param>
 
         <!-- The following parameters are only required for the AdvancedMode. -->
@@ -42,42 +41,12 @@
       </hardware>
 
       <gpio name="gripper">
-        <!--
-          Command interface to control the gripper:
-          1.0 = grip
-          0.0 = release
-        -->
         <command_interface name="grip_cmd"/>
-
-        <!--
-          State interface that follows the value of the gripper/grip_cmd
-          command interface:
-          1.0 = successful grip
-          0.0 = successful release
-        -->
         <state_interface name="grip_cmd"/>
-
-        <!--
-          Return the object detection status:
-          0.0 = unknown
-          1.0 = object detected at minimum pressure
-          2.0 = object detected at maximum pressure
-          3.0 = no object detected
-        -->
         <state_interface name="object_detection_status"/>
       </gpio>
 
-      <!--
-        This is optional configuration if you want to publish the state of the
-        gripper as a joint state interface.
-      -->
       <joint name="gripper">
-        <!--
-          State interface that follows the value of the gripper/grip_cmd
-          command interface:
-          1.0 = successful grip
-          0.0 = successful release
-        -->
         <state_interface name="position"/>
       </joint>
 

@@ -30,8 +30,8 @@
                        origin_xyz:='0 0 0'
                        origin_rpy:='0 0 0'
                        prefix:=''
-                       suction_cup_radius:=0.012
-                       suction_cup_height:=0.015
+                       suction_cup_radius:=0.010
+                       suction_cup_height:=0.034
                        extension_radius:=0.0
                        extension_length:=0.0
                        tcp_stroke_compensation:=0.0
@@ -87,7 +87,7 @@
 
     <!-- To allow MoveIt to actuate the gripper as part of a trajectory, we need to include a fake "joint" in the URDF corresponding to the Epick's vacuum state. -->
     <link name="${prefix}epick_vacuum_state"/>
-    <joint name="gripper" type="revolute">
+    <joint name="gripper" type="fixed"> 
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <parent link="${prefix}epick_tcp"/>
       <child link="${prefix}epick_vacuum_state"/>
